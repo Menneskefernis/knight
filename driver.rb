@@ -1,4 +1,13 @@
 require_relative 'knight'
 
-knight = Knight.new
-puts knight.find_tile(3, 4)
+board = Board.new
+$knight = Knight.new(board)
+
+def knight_moves(from, to)
+  path = $knight.backtrack($knight.traverse(from, to))
+  puts "You can move from #{from} to #{to} in #{path.size - 1} move(s):"
+  puts path
+  puts ""
+end
+
+knight_moves([4, 8], [1, 8])

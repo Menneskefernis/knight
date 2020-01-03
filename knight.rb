@@ -2,8 +2,9 @@ require_relative 'board'
 
 class Knight
   attr_accessor :game_board
-  def initialize
-    @game_board = Board.new
+  
+  def initialize(board)
+    @game_board = board
     connect_tiles
     #puts game_board.board[0][1].move_options
   end
@@ -45,5 +46,43 @@ class Knight
         end
       end
     end
+  end
+
+  def traverse(from, to)
+    root = find_tile(from[0], from[1])
+    return root if root.x == to[0] && root.y == to[1]
+
+    queue = []
+    queue << root
+
+    visited = []
+
+    until queue.empty?
+      current = queue.shift
+
+      visited << current
+
+      current.move_options.each do |move|
+        unless visited.include?(move)
+          move.moved_from = current
+          return move if move.x == to[0] && move.y == to[1]
+          queue << move
+        end
+      end
+    end
+  end
+
+  def backtrack_traversal(end_tile)
+    current = end_tile
+
+    path = []
+    path << current
+
+    until current.moved_from.nil?
+      current = current.moved_from
+      path.unshift(current)
+    end
+
+    path
   end
 end
