@@ -6,7 +6,6 @@ class Knight
   def initialize(board)
     @game_board = board
     connect_tiles
-    #puts game_board.board[0][1].move_options
   end
 
   def connect_tiles
@@ -74,7 +73,7 @@ class Knight
 
   def backtrack_traversal(end_tile)
     current = end_tile
-
+    
     path = []
     path << current
 
@@ -82,7 +81,14 @@ class Knight
       current = current.moved_from
       path.unshift(current)
     end
-
     path
+  end
+
+  def reset_path
+    game_board.board.each do |column|
+      column.each do |tile|
+        tile.moved_from = nil
+      end
+    end
   end
 end
